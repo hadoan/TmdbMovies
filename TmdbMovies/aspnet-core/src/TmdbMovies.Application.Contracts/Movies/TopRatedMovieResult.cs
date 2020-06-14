@@ -10,19 +10,19 @@
     public partial class TopRatedMovieResult
     {
         [JsonProperty("page")]
-        public long Page { get; set; }
+        public int Page { get; set; }
 
         [JsonProperty("total_results")]
         public long TotalResults { get; set; }
 
         [JsonProperty("total_pages")]
-        public long TotalPages { get; set; }
+        public int TotalPages { get; set; }
 
         [JsonProperty("results")]
-        public Result[] Results { get; set; }
+        public MovieResult[] Results { get; set; }
     }
 
-    public partial class Result
+    public partial class MovieResult
     {
         [JsonProperty("popularity")]
         public double Popularity { get; set; }

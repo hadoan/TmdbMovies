@@ -21,6 +21,8 @@ namespace TmdbMovies.EntityFrameworkCore
     [ConnectionStringName("Default")]
     public class TmdbMoviesDbContext : AbpDbContext<TmdbMoviesDbContext>
     {
+        public DbSet<MovieRetrieverHistory> MovieRetrieverHistories { get; set; }
+
         public DbSet<Movie> Movies { get; set; }
 
         public DbSet<AppUser> Users { get; set; }

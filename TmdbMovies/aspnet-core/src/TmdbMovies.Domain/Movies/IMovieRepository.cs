@@ -8,6 +8,12 @@ namespace TmdbMovies.Movies
 {
     public interface IMovieRepository : IRepository<Movie, long>
     {
+        Task<int> GetNextRetrieverPage();
+
+        Task SaveCurrentRetrieverPage(int page, int totalPages);
+
+        Task BulkInsert(IList<Movie> movies);
+
         Task<List<Movie>> GetListAsync(
             string filterText = null,
             double? popularityMin = null,

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using TmdbMovies.EntityFrameworkCore;
+using EFCore.BulkExtensions;
 
 namespace TmdbMovies.Movies
 {
@@ -117,6 +118,30 @@ namespace TmdbMovies.Movies
                     .WhereIf(!string.IsNullOrWhiteSpace(overview), e => e.Overview.Contains(overview))
                     .WhereIf(releaseDateMin.HasValue, e => e.ReleaseDate >= releaseDateMin.Value)
                     .WhereIf(releaseDateMax.HasValue, e => e.ReleaseDate <= releaseDateMax.Value);
+        }
+
+        public async Task<int> GetNextRetrieverPage()
+        {
+            var lastPage = await this.DbContext.MovieRetrieverHistories.OrderByDescending(x => x.Page).FirstOrDefaultAsync();
+            if (lastPage == null) return 1;
+            if (lastPage.Page < lastPage.TotalPages) return lastPage.Page + 1;
+            //-1: Queried and stored all data
+            return -1;
+        }
+
+        public async Task SaveCurrentRetrieverPage(int page, int totalPages)
+        {
+            DbContext.MovieRetrieverHistories.Add(new MovieRetrieverHistory
+            {
+                Page = page,
+                TotalPages = totalPages
+            });
+            await DbContext.SaveChangesAsync();
+        }
+
+        public Task BulkInsert(IList<Movie> movies)
+        {
+            return DbContext.BulkInsertAsync(movies);
         }
     }
 }
