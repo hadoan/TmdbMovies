@@ -64,6 +64,6 @@
         public string Overview { get; set; }
 
         [JsonProperty("release_date")]
-        public DateTimeOffset ReleaseDate { get; set; }
+        public DateTime ReleaseDate { get; set; }
     }
 }

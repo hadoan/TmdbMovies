@@ -4,10 +4,10 @@ import { Movies } from '../../store/models';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class MoviesService {
-  apiName = 'Default';
+    apiName = 'Default';
 
     constructor(private restService: RestService) { }
 
@@ -17,7 +17,7 @@ export class MoviesService {
             url: '/api/app/movie',
             params
         },
-        { apiName: this.apiName });
+            { apiName: this.apiName });
     }
 
     create(createMovieInput: Movies.MovieCreateUpdateDto): Observable<Movies.Movie> {
@@ -26,17 +26,23 @@ export class MoviesService {
             url: '/api/app/movie',
             body: createMovieInput
         },
-        { apiName: this.apiName });
+            { apiName: this.apiName });
     }
 
-    
+    getYoutubeTrailer(movieId: string): Observable<string> {
+        return this.restService.request<void, string>({
+            method: 'GET',
+            url: `/api/app/movie/gettrailer/${movieId}`
+        },
+            { apiName: this.apiName });
+    }
 
     getById(id: string): Observable<Movies.Movie> {
         return this.restService.request<void, Movies.Movie>({
             method: 'GET',
             url: `/api/app/movie/${id}`
         },
-        { apiName: this.apiName });
+            { apiName: this.apiName });
     }
 
     update(createMovieInput: Movies.MovieCreateUpdateDto, id: string): Observable<Movies.Movie> {
@@ -45,7 +51,7 @@ export class MoviesService {
             url: `/api/app/movie/${id}`,
             body: createMovieInput
         },
-        { apiName: this.apiName });
+            { apiName: this.apiName });
     }
 
     delete(id: string): Observable<void> {
@@ -53,6 +59,6 @@ export class MoviesService {
             method: 'DELETE',
             url: `/api/app/movie/${id}`
         },
-        { apiName: this.apiName });
+            { apiName: this.apiName });
     }
 }

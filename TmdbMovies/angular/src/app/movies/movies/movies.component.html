@@ -1,697 +1,392 @@
 <div class="row entry-row">
-    <div class="col-auto">
-        <h1 class="content-header-title">{{ '::Movies' | abpLocalization}} </h1>
+  <div class="col-auto">
+    <h1 class="content-header-title">{{ '::Movies' | abpLocalization}} </h1>
+  </div>
+
+  <div class="col-lg-auto pl-lg-0">
+    <abp-breadcrumb></abp-breadcrumb>
+  </div>
+
+  <div class="col">
+    <div class="text-lg-right pt-2" id="AbpContentToolbar">
+      <button *abpPermission="'TmdbMovies.Movies.Create'" id="create" class="btn btn-primary btn-sm" type="button"
+        (click)="onAdd()">
+        <i class="fa fa-plus mr-1"></i> <span>{{ '::NewMovie' | abpLocalization}}</span>
+      </button>
     </div>
-  
-    <div class="col-lg-auto pl-lg-0">
-        <abp-breadcrumb></abp-breadcrumb>
-    </div>
-  
-    <div class="col">
-        <div class="text-lg-right pt-2" id="AbpContentToolbar">
-            <button *abpPermission="'TmdbMovies.Movies.Create'" 
-                    id="create" 
-                    class="btn btn-primary btn-sm" 
-                    type="button" 
-                    (click)="onAdd()">
-                <i class="fa fa-plus mr-1"></i> <span>{{ '::NewMovie' | abpLocalization}}</span>
-            </button>
-        </div>
-    </div>
+  </div>
 </div>
-
+<!-- 
 <p>
-    <a href="javascript:;" 
-       (click)="isAdvancedFiltersHidden = !isAdvancedFiltersHidden" 
-       [attr.aria-expanded]="!isAdvancedFiltersHidden" 
-       aria-controls="advancedFilters">{{ '::SeeAdvancedFilters' | abpLocalization }}
-   <i [ngbCollapse]="!isAdvancedFiltersHidden" class="fa fa-angle-down ml-1"></i>
-   <i [ngbCollapse]="isAdvancedFiltersHidden" class="fa fa-angle-up ml-1"></i>
-   </a>
-</p>
+  <a href="javascript:;" (click)="isAdvancedFiltersHidden = !isAdvancedFiltersHidden"
+    [attr.aria-expanded]="!isAdvancedFiltersHidden"
+    aria-controls="advancedFilters">{{ '::SeeAdvancedFilters' | abpLocalization }}
+    <i [ngbCollapse]="!isAdvancedFiltersHidden" class="fa fa-angle-down ml-1"></i>
+    <i [ngbCollapse]="isAdvancedFiltersHidden" class="fa fa-angle-up ml-1"></i>
+  </a>
+</p> -->
 
-<div id="advancedFilters" [ngbCollapse]="isAdvancedFiltersHidden">
-    <div class="card mb-4">
-        <div class="card-body">
-            <form (keyup.enter)="get()">
-                <div class="row">
-                              <div class="col col-md-2">
+<div id="advancedFilters">
+  <div class="card mb-4">
+    <div class="card-body">
+      <form (keyup.enter)="get()">
+        <div class="row">
+          <div class="col col-md-2">
             <div class="form-group">
               <label for="minPopularity">
-                  {{ '::MinPopularity' | abpLocalization }}
+                {{ '::MinPopularity' | abpLocalization }}
               </label>
-              <input
-                id="minPopularity"
-                type="number"
-                class="form-control"
-                [(ngModel)]="pageQuery.popularityMin"
-                [ngModelOptions]="{ standalone: true }"/>
+              <input id="minPopularity" type="number" class="form-control" [(ngModel)]="pageQuery.popularityMin"
+                [ngModelOptions]="{ standalone: true }" />
             </div>
           </div>
           <div class="col col-md-2">
             <div class="form-group">
               <label for="maxPopularity">
-                  {{ '::MaxPopularity' | abpLocalization }}
+                {{ '::MaxPopularity' | abpLocalization }}
               </label>
-              <input
-                id="maxPopularity"
-                type="number"
-                class="form-control"
-                [(ngModel)]="pageQuery.popularityMax"
-                [ngModelOptions]="{ standalone: true }"
-              />
+              <input id="maxPopularity" type="number" class="form-control" [(ngModel)]="pageQuery.popularityMax"
+                [ngModelOptions]="{ standalone: true }" />
             </div>
           </div>
           <div class="col col-md-2">
             <div class="form-group">
               <label for="minVoteCount">
-                  {{ '::MinVoteCount' | abpLocalization }}
+                {{ '::MinVoteCount' | abpLocalization }}
               </label>
-              <input
-                id="minVoteCount"
-                type="number"
-                class="form-control"
-                [(ngModel)]="pageQuery.voteCountMin"
-                [ngModelOptions]="{ standalone: true }"/>
+              <input id="minVoteCount" type="number" class="form-control" [(ngModel)]="pageQuery.voteCountMin"
+                [ngModelOptions]="{ standalone: true }" />
             </div>
           </div>
           <div class="col col-md-2">
             <div class="form-group">
               <label for="maxVoteCount">
-                  {{ '::MaxVoteCount' | abpLocalization }}
+                {{ '::MaxVoteCount' | abpLocalization }}
               </label>
-              <input
-                id="maxVoteCount"
-                type="number"
-                class="form-control"
-                [(ngModel)]="pageQuery.voteCountMax"
-                [ngModelOptions]="{ standalone: true }"
-              />
+              <input id="maxVoteCount" type="number" class="form-control" [(ngModel)]="pageQuery.voteCountMax"
+                [ngModelOptions]="{ standalone: true }" />
             </div>
           </div>
-          <div class="col col-md-2">
+          <!-- <div class="col col-md-2">
             <div class="form-group">
               <label for="videoFilter">
-                  {{ '::Video' | abpLocalization }}
+                {{ '::Video' | abpLocalization }}
               </label>
-              
-              <select
-                name="video"
-                id="videoFilter"
-                class="custom-select form-control"
-                [(ngModel)]="pageQuery.video"
-                [ngModelOptions]="{ standalone: true }"
-                (change)="get()">
+
+              <select name="video" id="videoFilter" class="custom-select form-control" [(ngModel)]="pageQuery.video"
+                [ngModelOptions]="{ standalone: true }" (change)="get()">
                 <option [ngValue]=""></option>
                 <option [ngValue]="true">{{ 'AbpUi::Yes' | abpLocalization }}</option>
                 <option [ngValue]="false">{{ 'AbpUi::No' | abpLocalization }}</option>
               </select>
             </div>
-          </div>
-         <div class="col col-md-2">
+          </div> -->
+          <!-- <div class="col col-md-2">
             <div class="form-group">
               <label for="posterPathFilter">
-                  {{ '::PosterPath' | abpLocalization }}
+                {{ '::PosterPath' | abpLocalization }}
               </label>
-              
-              <input
-                id="posterPathFilter"
-                type="text"
-                class="form-control"
-                [(ngModel)]="pageQuery.posterPath"
-                [ngModelOptions]="{ standalone: true }"/>
+
+              <input id="posterPathFilter" type="text" class="form-control" [(ngModel)]="pageQuery.posterPath"
+                [ngModelOptions]="{ standalone: true }" />
             </div>
-          </div>
-          <div class="col col-md-2">
+          </div> -->
+          <!-- <div class="col col-md-2">
             <div class="form-group">
               <label for="minMovieId">
-                  {{ '::MinMovieId' | abpLocalization }}
+                {{ '::MinMovieId' | abpLocalization }}
               </label>
-              <input
-                id="minMovieId"
-                type="number"
-                class="form-control"
-                [(ngModel)]="pageQuery.movieIdMin"
-                [ngModelOptions]="{ standalone: true }"/>
+              <input id="minMovieId" type="number" class="form-control" [(ngModel)]="pageQuery.movieIdMin"
+                [ngModelOptions]="{ standalone: true }" />
             </div>
           </div>
           <div class="col col-md-2">
             <div class="form-group">
               <label for="maxMovieId">
-                  {{ '::MaxMovieId' | abpLocalization }}
+                {{ '::MaxMovieId' | abpLocalization }}
               </label>
-              <input
-                id="maxMovieId"
-                type="number"
-                class="form-control"
-                [(ngModel)]="pageQuery.movieIdMax"
-                [ngModelOptions]="{ standalone: true }"
-              />
+              <input id="maxMovieId" type="number" class="form-control" [(ngModel)]="pageQuery.movieIdMax"
+                [ngModelOptions]="{ standalone: true }" />
             </div>
-          </div>
+          </div> -->
           <div class="col col-md-2">
             <div class="form-group">
               <label for="adultFilter">
-                  {{ '::Adult' | abpLocalization }}
+                {{ '::Adult' | abpLocalization }}
               </label>
-              
-              <select
-                name="adult"
-                id="adultFilter"
-                class="custom-select form-control"
-                [(ngModel)]="pageQuery.adult"
-                [ngModelOptions]="{ standalone: true }"
-                (change)="get()">
+
+              <select name="adult" id="adultFilter" class="custom-select form-control" [(ngModel)]="pageQuery.adult"
+                [ngModelOptions]="{ standalone: true }" (change)="get()">
                 <option [ngValue]=""></option>
                 <option [ngValue]="true">{{ 'AbpUi::Yes' | abpLocalization }}</option>
                 <option [ngValue]="false">{{ 'AbpUi::No' | abpLocalization }}</option>
               </select>
             </div>
           </div>
-         <div class="col col-md-2">
+          <!-- <div class="col col-md-2">
             <div class="form-group">
               <label for="backdropPathFilter">
-                  {{ '::BackdropPath' | abpLocalization }}
+                {{ '::BackdropPath' | abpLocalization }}
               </label>
-              
-              <input
-                id="backdropPathFilter"
-                type="text"
-                class="form-control"
-                [(ngModel)]="pageQuery.backdropPath"
-                [ngModelOptions]="{ standalone: true }"/>
+
+              <input id="backdropPathFilter" type="text" class="form-control" [(ngModel)]="pageQuery.backdropPath"
+                [ngModelOptions]="{ standalone: true }" />
             </div>
-          </div>
-         <div class="col col-md-2">
+          </div> -->
+          <div class="col col-md-2">
             <div class="form-group">
               <label for="originalLanguageFilter">
-                  {{ '::OriginalLanguage' | abpLocalization }}
+                {{ '::OriginalLanguage' | abpLocalization }}
               </label>
-              
-              <input
-                id="originalLanguageFilter"
-                type="text"
-                class="form-control"
-                [(ngModel)]="pageQuery.originalLanguage"
-                [ngModelOptions]="{ standalone: true }"/>
+
+              <input id="originalLanguageFilter" type="text" class="form-control"
+                [(ngModel)]="pageQuery.originalLanguage" [ngModelOptions]="{ standalone: true }" />
             </div>
           </div>
-         <div class="col col-md-2">
+          <div class="col col-md-2">
             <div class="form-group">
               <label for="originalTitleFilter">
-                  {{ '::OriginalTitle' | abpLocalization }}
+                {{ '::OriginalTitle' | abpLocalization }}
               </label>
-              
-              <input
-                id="originalTitleFilter"
-                type="text"
-                class="form-control"
-                [(ngModel)]="pageQuery.originalTitle"
-                [ngModelOptions]="{ standalone: true }"/>
+
+              <input id="originalTitleFilter" type="text" class="form-control" [(ngModel)]="pageQuery.originalTitle"
+                [ngModelOptions]="{ standalone: true }" />
             </div>
           </div>
-         <div class="col col-md-2">
+          <div class="col col-md-2">
             <div class="form-group">
               <label for="titleFilter">
-                  {{ '::Title' | abpLocalization }}
+                {{ '::Title' | abpLocalization }}
               </label>
-              
-              <input
-                id="titleFilter"
-                type="text"
-                class="form-control"
-                [(ngModel)]="pageQuery.title"
-                [ngModelOptions]="{ standalone: true }"/>
+
+              <input id="titleFilter" type="text" class="form-control" [(ngModel)]="pageQuery.title"
+                [ngModelOptions]="{ standalone: true }" />
             </div>
           </div>
           <div class="col col-md-2">
             <div class="form-group">
               <label for="minVoteAverage">
-                  {{ '::MinVoteAverage' | abpLocalization }}
+                {{ '::MinVoteAverage' | abpLocalization }}
               </label>
-              <input
-                id="minVoteAverage"
-                type="number"
-                class="form-control"
-                [(ngModel)]="pageQuery.voteAverageMin"
-                [ngModelOptions]="{ standalone: true }"/>
+              <input id="minVoteAverage" type="number" class="form-control" [(ngModel)]="pageQuery.voteAverageMin"
+                [ngModelOptions]="{ standalone: true }" />
             </div>
           </div>
           <div class="col col-md-2">
             <div class="form-group">
               <label for="maxVoteAverage">
-                  {{ '::MaxVoteAverage' | abpLocalization }}
+                {{ '::MaxVoteAverage' | abpLocalization }}
               </label>
-              <input
-                id="maxVoteAverage"
-                type="number"
-                class="form-control"
-                [(ngModel)]="pageQuery.voteAverageMax"
-                [ngModelOptions]="{ standalone: true }"
-              />
+              <input id="maxVoteAverage" type="number" class="form-control" [(ngModel)]="pageQuery.voteAverageMax"
+                [ngModelOptions]="{ standalone: true }" />
             </div>
           </div>
-         <div class="col col-md-2">
+          <!-- <div class="col col-md-2">
             <div class="form-group">
               <label for="overviewFilter">
-                  {{ '::Overview' | abpLocalization }}
+                {{ '::Overview' | abpLocalization }}
               </label>
-              
-              <input
-                id="overviewFilter"
-                type="text"
-                class="form-control"
-                [(ngModel)]="pageQuery.overview"
-                [ngModelOptions]="{ standalone: true }"/>
+
+              <input id="overviewFilter" type="text" class="form-control" [(ngModel)]="pageQuery.overview"
+                [ngModelOptions]="{ standalone: true }" />
             </div>
-          </div>
+          </div> -->
           <div class="col col-md-2">
             <div class="form-group">
               <label for="minReleaseDate">
-                  {{ '::MinReleaseDate' | abpLocalization }}
+                {{ '::MinReleaseDate' | abpLocalization }}
               </label>
 
-              <input
-                id="minReleaseDate"
-                class="form-control"
-                #minReleaseDateDatepicker="ngbDatepicker"
-                name="minReleaseDate"
-                ngbDatepicker
-                (click)="minReleaseDateDatepicker.toggle()"
-                [(ngModel)]="pageQuery.releaseDateMin"
-                [ngModelOptions]="{ standalone: true }"/>
+              <input id="minReleaseDate" class="form-control" #minReleaseDateDatepicker="ngbDatepicker"
+                name="minReleaseDate" ngbDatepicker (click)="minReleaseDateDatepicker.toggle()"
+                [(ngModel)]="pageQuery.releaseDateMin" [ngModelOptions]="{ standalone: true }" />
             </div>
           </div>
           <div class="col col-md-2">
             <div class="form-group">
               <label for="maxReleaseDate">{{ '::MaxReleaseDate' | abpLocalization }}</label>
-              <input
-                id="maxReleaseDate"
-                class="form-control"
-                #maxReleaseDateDatepicker="ngbDatepicker"
-                name="maxReleaseDate"
-                ngbDatepicker
-                (click)="maxReleaseDateDatepicker.toggle()"
-                [(ngModel)]="pageQuery.releaseDateMax"
-                [ngModelOptions]="{ standalone: true }"/>
+              <input id="maxReleaseDate" class="form-control" #maxReleaseDateDatepicker="ngbDatepicker"
+                name="maxReleaseDate" ngbDatepicker (click)="maxReleaseDateDatepicker.toggle()"
+                [(ngModel)]="pageQuery.releaseDateMax" [ngModelOptions]="{ standalone: true }" />
             </div>
           </div>
 
-                </div>
-              
-                <div class="float-right col col-md-2 align-self-center">
-                    <button type="button" class="btn btn-primary btn-block" (click)="get()">
-                        <span>{{ 'AbpUi::Refresh' | abpLocalization }}</span>
-                    </button>
-                </div>
-            </form>
         </div>
+
+        <div class="float-right col col-md-2 align-self-center">
+          <button type="button" class="btn btn-primary btn-block" (click)="get()">
+            <span>{{ 'AbpUi::Refresh' | abpLocalization }}</span>
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 
 <div id="Movies-wrapper">
-    <div class="card">
-        <div class="card-body">
-            <div id="data-tables-table-filter" class="data-tables-filter">
-                <label>
-                    <input type="search" 
-                           class="form-control form-control-sm" 
-                           [placeholder]="'AbpUi::PagerSearch' | abpLocalization" 
-                           (input.debounce)="onSearch($event.target.value)" />
-                </label>
-            </div>
-          
-            <abp-table 
-                       [abpLoading]="loading" 
-                       [abpLoadingDelay]="500" 
-                       [abpTableSort]="{ key: sortKey, order: sortOrder }" 
-                       [headerTemplate]="tableHeader" 
-                       [colgroupTemplate]="tableColgroup" 
-                       [bodyTemplate]="tableBody" 
-                       [value]="data$ | async" 
-                       [rows]="pageQuery.maxResultCount" 
-                       [totalRecords]="totalCount$ | async" 
-                       [scrollable]="true" 
-                       (pageChange)="onPageChange($event)">
-            </abp-table>
-          
-            <ng-template #tableColgroup>
-                <colgroup>
-                    <col [ngStyle]="{ 'width.px': 150 }" />
-                </colgroup>
-            </ng-template>
-          
-            <ng-template #tableHeader>
-                <tr>
-                    <th>{{ 'AbpUi::Actions' | abpLocalization }}</th>
-                    		    <th (click)="sortOrderIcon.sort('popularity')">
-              {{ '::Popularity' | abpLocalization }}
-              <abp-sort-order-icon
-                #sortOrderIcon
-                sortKey="popularity"
-                [(selectedSortKey)]="sortKey"
-                [(order)]="sortOrder">
-              </abp-sort-order-icon>
-            </th>
-		    <th (click)="sortOrderIcon.sort('voteCount')">
-              {{ '::VoteCount' | abpLocalization }}
-              <abp-sort-order-icon
-                #sortOrderIcon
-                sortKey="voteCount"
-                [(selectedSortKey)]="sortKey"
-                [(order)]="sortOrder">
-              </abp-sort-order-icon>
-            </th>
-		    <th (click)="sortOrderIcon.sort('video')">
-              {{ '::Video' | abpLocalization }}
-              <abp-sort-order-icon
-                #sortOrderIcon
-                sortKey="video"
-                [(selectedSortKey)]="sortKey"
-                [(order)]="sortOrder">
-              </abp-sort-order-icon>
-            </th>
-		    <th (click)="sortOrderIcon.sort('posterPath')">
-              {{ '::PosterPath' | abpLocalization }}
-              <abp-sort-order-icon
-                #sortOrderIcon
-                sortKey="posterPath"
-                [(selectedSortKey)]="sortKey"
-                [(order)]="sortOrder">
-              </abp-sort-order-icon>
-            </th>
-		    <th (click)="sortOrderIcon.sort('movieId')">
-              {{ '::MovieId' | abpLocalization }}
-              <abp-sort-order-icon
-                #sortOrderIcon
-                sortKey="movieId"
-                [(selectedSortKey)]="sortKey"
-                [(order)]="sortOrder">
-              </abp-sort-order-icon>
-            </th>
-		    <th (click)="sortOrderIcon.sort('adult')">
-              {{ '::Adult' | abpLocalization }}
-              <abp-sort-order-icon
-                #sortOrderIcon
-                sortKey="adult"
-                [(selectedSortKey)]="sortKey"
-                [(order)]="sortOrder">
-              </abp-sort-order-icon>
-            </th>
-		    <th (click)="sortOrderIcon.sort('backdropPath')">
-              {{ '::BackdropPath' | abpLocalization }}
-              <abp-sort-order-icon
-                #sortOrderIcon
-                sortKey="backdropPath"
-                [(selectedSortKey)]="sortKey"
-                [(order)]="sortOrder">
-              </abp-sort-order-icon>
-            </th>
-		    <th (click)="sortOrderIcon.sort('originalLanguage')">
-              {{ '::OriginalLanguage' | abpLocalization }}
-              <abp-sort-order-icon
-                #sortOrderIcon
-                sortKey="originalLanguage"
-                [(selectedSortKey)]="sortKey"
-                [(order)]="sortOrder">
-              </abp-sort-order-icon>
-            </th>
-		    <th (click)="sortOrderIcon.sort('originalTitle')">
-              {{ '::OriginalTitle' | abpLocalization }}
-              <abp-sort-order-icon
-                #sortOrderIcon
-                sortKey="originalTitle"
-                [(selectedSortKey)]="sortKey"
-                [(order)]="sortOrder">
-              </abp-sort-order-icon>
-            </th>
-		    <th (click)="sortOrderIcon.sort('title')">
-              {{ '::Title' | abpLocalization }}
-              <abp-sort-order-icon
-                #sortOrderIcon
-                sortKey="title"
-                [(selectedSortKey)]="sortKey"
-                [(order)]="sortOrder">
-              </abp-sort-order-icon>
-            </th>
-		    <th (click)="sortOrderIcon.sort('voteAverage')">
-              {{ '::VoteAverage' | abpLocalization }}
-              <abp-sort-order-icon
-                #sortOrderIcon
-                sortKey="voteAverage"
-                [(selectedSortKey)]="sortKey"
-                [(order)]="sortOrder">
-              </abp-sort-order-icon>
-            </th>
-		    <th (click)="sortOrderIcon.sort('overview')">
-              {{ '::Overview' | abpLocalization }}
-              <abp-sort-order-icon
-                #sortOrderIcon
-                sortKey="overview"
-                [(selectedSortKey)]="sortKey"
-                [(order)]="sortOrder">
-              </abp-sort-order-icon>
-            </th>
-		    <th (click)="sortOrderIcon.sort('releaseDate')">
-              {{ '::ReleaseDate' | abpLocalization }}
-              <abp-sort-order-icon
-                #sortOrderIcon
-                sortKey="releaseDate"
-                [(selectedSortKey)]="sortKey"
-                [(order)]="sortOrder">
-              </abp-sort-order-icon>
-            </th>
+  <div class="card">
+    <div class="card-body">
+      <div id="data-tables-table-filter" class="data-tables-filter">
+        <label>
+          <input type="search" class="form-control form-control-sm"
+            [placeholder]="'AbpUi::PagerSearch' | abpLocalization" (input.debounce)="onSearch($event.target.value)" />
+        </label>
+      </div>
+      <div class="row">
+      <div *ngFor="let item of data$ | async" class="col col-md-6">
+        <div class="card style_1">
+          <div class="image">
+            <div class="wrapper">
+              <a class="image" (click)="onEdit(item.id)"  title="{{item.title}}">
 
-                </tr>
-            </ng-template>
-          
-            <ng-template #tableBody let-data>
-                <tr>
-                    <td class="text-center">
-                        <div ngbDropdown container="body" class="d-inline-block">
-                            <button class="btn btn-primary btn-sm dropdown-toggle" 
-                                    data-toggle="dropdown" 
-                                    aria-haspopup="true" 
-                                    ngbDropdownToggle>
-                                <i class="fa fa-cog mr-1"></i>{{ 'AbpUi::Actions' | abpLocalization }}
-                            </button>
-                          
-                            <div ngbDropdownMenu>
-                                <button ngbDropdownItem 
-                                        *abpPermission="'TmdbMovies.Movies.Edit'" 
-                                        (click)="onEdit(data.id)">
-                                    {{ 'AbpUi::Edit' | abpLocalization }}
-                                </button>
-                              
-                                <button ngbDropdownItem 
-                                        *abpPermission="'TmdbMovies.Movies.Delete'" 
-                                        (click)="delete(data.id)">
-                                    {{ 'AbpUi::Delete' | abpLocalization }}
-                                </button>
-                            </div>
-                        </div>
-                    </td>
-                    
-                    <td>
-                        {{ data.popularity }}
-                    </td>
-                    <td>
-                        {{ data.voteCount }}
-                    </td>
-                    <td>
-                        {{ (data.video ? 'AbpUi::Yes' : 'AbpUi::No') | abpLocalization }}
-                    </td>
-                    <td>
-                        {{ data.posterPath }}
-                    </td>
-                    <td>
-                        {{ data.movieId }}
-                    </td>
-                    <td>
-                        {{ (data.adult ? 'AbpUi::Yes' : 'AbpUi::No') | abpLocalization }}
-                    </td>
-                    <td>
-                        {{ data.backdropPath }}
-                    </td>
-                    <td>
-                        {{ data.originalLanguage }}
-                    </td>
-                    <td>
-                        {{ data.originalTitle }}
-                    </td>
-                    <td>
-                        {{ data.title }}
-                    </td>
-                    <td>
-                        {{ data.voteAverage }}
-                    </td>
-                    <td>
-                        {{ data.overview }}
-                    </td>
-                    <td>
-                        {{ data.releaseDate | date }}
-                    </td> 
-                </tr>
-            </ng-template>
+
+                <img class="poster lazyload lazyloaded"
+                  src="https://image.tmdb.org/t/p/w220_and_h330_face/{{item.posterPath}}">
+
+              </a>
+            </div>
+            <div class="options"  data-media-type="tv"
+              data-role="tooltip">
+              <a class="no_click" href="#">
+                <div class="glyphicons_v2 circle-more white"></div>
+              </a>
+            </div>
+          </div>
+          <div class="content">
+            <div class="consensus tight">
+              <div class="outer_ring">
+                <div class="user_score_chart 537523a50e0a26303100024e" data-percent="73.0" data-track-color="#204529"
+                  data-bar-color="#21d07a">
+                  <div class="percent">
+
+                    <span class="icon icon-r73"></span>
+
+                  </div>
+                  <canvas height="34" width="34"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <h2><a  (click)="onEdit(item.id)" title="The Flash">{{item.title}}</a></h2>
+            <p> {{ item.releaseDate | date }}</p>
+          </div>
+
+          <div class="hover 60735"></div>
         </div>
+      </div>
+      </div>
+
+      <abp-table [abpLoading]="loading" [abpLoadingDelay]="500" [abpTableSort]="{ key: sortKey, order: sortOrder }"
+        [colgroupTemplate]="tableColgroup" [bodyTemplate]="tableBody" [value]="data$ | async"
+        [rows]="pageQuery.maxResultCount" [totalRecords]="totalCount$ | async" [scrollable]="true"
+        (pageChange)="onPageChange($event)">
+      </abp-table>
+
+      <ng-template #tableColgroup>
+        <colgroup>
+          <col [ngStyle]="{ 'width.px': 150 }" />
+        </colgroup>
+      </ng-template>
+
+
+      <ng-template #tableBody let-data>
+     
+        <!-- <tr>
+         
+        </tr> -->
+      </ng-template>
+      
     </div>
+  </div>
 </div>
 
-<abp-modal [(visible)]="isModalVisible" 
-           [busy]="modalBusy" 
-           (disappear)="form = null">
-    <ng-template #abpHeader>
-        <h3>{{ (selected?.id ? 'AbpUi::Edit' : '::NewMovie') | abpLocalization}}</h3>
-    </ng-template>
-  
-    <ng-template #abpBody>
-        <form [formGroup]="form" (ngSubmit)="save()" validateOnSubmit>
-            <div class="mt-2 fade-in-top">
-                    <div class="form-group">
-      <label for="movie-popularity">
-          {{ '::Popularity' | abpLocalization }}
-      </label>
+<abp-modal [(visible)]="isModalVisible" [busy]="modalBusy" (disappear)="form = null">
+  <ng-template #abpHeader>
+    <h3>{{ (selected?.id ? 'AbpUi::View' : '::NewMovie') | abpLocalization}}</h3>
+  </ng-template>
 
-      <input type="number" 
-             id="movie-popularity" 
-             class="form-control" 
-             formControlName="popularity" />
-    </div>
-    <div class="form-group">
-      <label for="movie-voteCount">
-          {{ '::VoteCount' | abpLocalization }}
-      </label>
+  <ng-template #abpBody>
+    <form [formGroup]="form" (ngSubmit)="save()" validateOnSubmit>
+      <div class="mt-2 fade-in-top">
+        <div class="form-group">
+          <label for="movie-originalTitle">
+           Trailer
+          </label>
 
-      <input type="number" 
-             id="movie-voteCount" 
-             class="form-control" 
-             formControlName="voteCount" />
-    </div>
-	<div class="form-group form-check custom-checkbox custom-control">
-      <input type="checkbox" 
-             id="movie-video" 
-             class="form-check-input custom-control-input" 
-             formControlName="video" />
+          <!-- <input type="text" id="movie-originalTitle" class="form-control" formControlName="originalTitle" /> -->
+          <span class="form-control" >
+            <a href="https://www.youtube.com/watch?v={{selected.youtubeTrailerId}}&feature=emb_title" target="_blank">https://www.youtube.com/watch?v={{selected.youtubeTrailerId}}&feature=emb_title</a>
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="movie-title">
+            {{ '::Title' | abpLocalization }}
+          </label>
 
-      <label class="custom-control-label" 
-             for="movie-video">
-          {{ '::Video' | abpLocalization }}
-      </label>
-    </div>
-    <div class="form-group">
-      <label for="movie-posterPath">
-          {{ '::PosterPath' | abpLocalization }}
-      </label>
+          <!-- <input type="text" id="movie-title" class="form-control" formControlName="title" /> -->
+          <span class="form-control" >{{selected.title}}</span>
+        </div>
 
-      <input type="text" 
-             id="movie-posterPath" 
-             class="form-control" 			 
-             formControlName="posterPath" autofocus  />
-    </div>
-    <div class="form-group">
-      <label for="movie-movieId">
-          {{ '::MovieId' | abpLocalization }}
-      </label>
+        <div class="form-group">
+          <label for="movie-popularity">
+            {{ '::Popularity' | abpLocalization }}
+          </label>
 
-      <input type="number" 
-             id="movie-movieId" 
-             class="form-control" 
-             formControlName="movieId" />
-    </div>
-	<div class="form-group form-check custom-checkbox custom-control">
-      <input type="checkbox" 
-             id="movie-adult" 
-             class="form-check-input custom-control-input" 
-             formControlName="adult" />
+          <!-- <input type="number" id="movie-popularity" class="form-control" formControlName="popularity" /> -->
+          <span class="form-control" >{{selected.popularity}}</span>
+        </div>
+        <div class="form-group">
+          <label for="movie-voteCount">
+            {{ '::VoteCount' | abpLocalization }}
+          </label>
 
-      <label class="custom-control-label" 
-             for="movie-adult">
-          {{ '::Adult' | abpLocalization }}
-      </label>
-    </div>
-    <div class="form-group">
-      <label for="movie-backdropPath">
-          {{ '::BackdropPath' | abpLocalization }}
-      </label>
+          <!-- <input type="number" id="movie-voteCount" class="form-control" formControlName="voteCount" /> -->
+          <span class="form-control" >{{selected.voteCount}}</span>
+        </div>
+       
+        <div class="form-group">
+          <label for="movie-voteAverage">
+            {{ '::VoteAverage' | abpLocalization }}
+          </label>
 
-      <input type="text" 
-             id="movie-backdropPath" 
-             class="form-control" 			 
-             formControlName="backdropPath"   />
-    </div>
-    <div class="form-group">
-      <label for="movie-originalLanguage">
-          {{ '::OriginalLanguage' | abpLocalization }}
-      </label>
+          <span class="form-control" >{{selected.voteAverage}}</span>
+        </div>
 
-      <input type="text" 
-             id="movie-originalLanguage" 
-             class="form-control" 			 
-             formControlName="originalLanguage"   />
-    </div>
-    <div class="form-group">
-      <label for="movie-originalTitle">
-          {{ '::OriginalTitle' | abpLocalization }}
-      </label>
+        <div class="form-group form-check custom-checkbox custom-control">
+          <input type="checkbox" id="movie-adult" class="form-check-input custom-control-input disabled"
+            formControlName="adult" />
 
-      <input type="text" 
-             id="movie-originalTitle" 
-             class="form-control" 			 
-             formControlName="originalTitle"   />
-    </div>
-    <div class="form-group">
-      <label for="movie-title">
-          {{ '::Title' | abpLocalization }}
-      </label>
-
-      <input type="text" 
-             id="movie-title" 
-             class="form-control" 			 
-             formControlName="title"   />
-    </div>
-    <div class="form-group">
-      <label for="movie-voteAverage">
-          {{ '::VoteAverage' | abpLocalization }}
-      </label>
-
-      <input type="number" 
-             id="movie-voteAverage" 
-             class="form-control" 
-             formControlName="voteAverage" />
-    </div>
-    <div class="form-group">
-      <label for="movie-overview">
-          {{ '::Overview' | abpLocalization }}
-      </label>
-
-      <input type="text" 
-             id="movie-overview" 
-             class="form-control" 			 
-             formControlName="overview"   />
-    </div>
-    <div class="form-group">
-      <label>{{ '::ReleaseDate' | abpLocalization }}</label><span> * </span>
-      <input
-        #ReleaseDateDatepicker="ngbDatepicker"
-        class="form-control"
-        name="ReleaseDate"
-        formControlName="releaseDate"
-        ngbDatepicker
-        (click)="ReleaseDateDatepicker.toggle()"/>
-    </div>
- 
-            </div>
-        </form>
-    </ng-template>
-  
-    <ng-template #abpFooter>
-        <button type="button" class="btn btn-secondary" #abpClose>
-            {{ 'AbpUi::Cancel' | abpLocalization }}
-        </button>
+          <label class="custom-control-label" for="movie-adult">
+            {{ '::Adult' | abpLocalization }}
+          </label>
+        </div>
+       
       
-        <abp-button iconClass="fa fa-check" (click)="save()" 
-                    [disabled]="form?.invalid">
-            {{ 'AbpUi::Save' | abpLocalization }}
-        </abp-button>
-    </ng-template>
+      
+        <div class="form-group">
+          <label>{{ '::ReleaseDate' | abpLocalization }}</label><span> * </span>
+          <span class="form-control" >{{selected.releaseDate | date}}</span>
+        </div>
+
+        <div class="form-group">
+          <label for="movie-overview">
+            {{ '::Overview' | abpLocalization }}
+          </label>
+
+                    <div class="row" >{{selected.overview}}</div>
+        </div>
+
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-secondary" #abpClose>
+      {{ 'AbpUi::Cancel' | abpLocalization }}
+    </button>
+
+    <abp-button iconClass="fa fa-check" (click)="save()" [disabled]="form?.invalid">
+      {{ 'AbpUi::Save' | abpLocalization }}
+    </abp-button>
+  </ng-template>
 </abp-modal>

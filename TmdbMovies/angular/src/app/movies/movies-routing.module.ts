@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: '',
     children: [{ path: '', component: MoviesComponent }],
-    canActivate: [PermissionGuard],
+    // canActivate: [PermissionGuard],
     data: { requiredPolicy: 'TmdbMovies.Movies' },
   }
 ];

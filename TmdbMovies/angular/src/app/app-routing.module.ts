@@ -34,8 +34,8 @@ const routes: Routes = [
     data: {
       routes: {
         iconClass: 'fa fa-file-alt',
-        name: '::Menu:Movies',
-        requiredPolicy: 'TmdbMovies.Movies'
+        name: 'Movies',
+        // requiredPolicy: 'TmdbMovies.Movies'
       } as ABP.Route,
     },
   }

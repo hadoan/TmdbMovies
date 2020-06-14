@@ -16,6 +16,11 @@ namespace TmdbMovies.EntityFrameworkCore
             {
                 b.ToTable(TmdbMoviesConsts.DbTablePrefix + "Movies", TmdbMoviesConsts.DbSchema);
             });
+
+            builder.Entity<MovieRetrieverHistory>(b =>
+            {
+                b.ToTable(TmdbMoviesConsts.DbTablePrefix + "MovieRetrieverHistories", TmdbMoviesConsts.DbSchema);
+            });
         }
     }
 }

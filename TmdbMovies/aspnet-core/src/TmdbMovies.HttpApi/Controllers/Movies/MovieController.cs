@@ -5,6 +5,7 @@ using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Application.Dtos;
 using TmdbMovies.Movies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TmdbMovies.Controllers.Movies
 {
@@ -15,10 +16,19 @@ namespace TmdbMovies.Controllers.Movies
     public class MovieController : AbpController, IMovieAppService
     {
         private readonly IMovieAppService _movieAppService;
+        private readonly ITheMovieDbApiIntegrationService _theMovieDbApiIntegrationService;
 
-        public MovieController(IMovieAppService movieAppService)
+        public MovieController(IMovieAppService movieAppService, ITheMovieDbApiIntegrationService theMovieDbApiIntegrationService)
         {
             _movieAppService = movieAppService;
+            _theMovieDbApiIntegrationService = theMovieDbApiIntegrationService;
+        }
+
+        [HttpGet]
+        [Route("gettrailer/{movieId}")]
+        public Task<string> GetYoutubeTrailerAsync(long movieId)
+        {
+            return _theMovieDbApiIntegrationService.GetYoutubeTrailerId(movieId);
         }
 
         [HttpGet]

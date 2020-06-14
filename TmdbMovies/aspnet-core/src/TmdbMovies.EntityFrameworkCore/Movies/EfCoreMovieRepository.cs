@@ -143,5 +143,10 @@ namespace TmdbMovies.Movies
         {
             return DbContext.BulkInsertAsync(movies);
         }
+
+        public Task<Movie> FindByMovieId(long movieId)
+        {
+            return DbContext.Movies.SingleOrDefaultAsync(x => x.MovieId == movieId);
+        }
     }
 }

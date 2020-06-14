@@ -9,5 +9,7 @@ namespace TmdbMovies.Movies
     public interface ITheMovieDbApiIntegrationService : ITransientDependency
     {
         Task RetrieveTopRatedMovieResult();
+
+        Task<string> GetYoutubeTrailerId(long movieId);
     }
 }

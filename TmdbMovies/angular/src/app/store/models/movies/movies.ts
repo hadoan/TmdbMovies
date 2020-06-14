@@ -46,6 +46,7 @@ export namespace Movies {
         voteAverage: number;
         overview: string;
         releaseDate: string;
+        youtubeTrailerId: string;
     }
 
     export interface MovieCreateUpdateDto {

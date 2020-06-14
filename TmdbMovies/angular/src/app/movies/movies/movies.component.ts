@@ -10,6 +10,7 @@ import { Movies } from '../../store/models';
 import { GetMovies, CreateUpdateMovie, DeleteMovie } from '../../store/actions';
 import { NgbDateNativeAdapter, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import snq from 'snq';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-movies',
@@ -46,7 +47,7 @@ export class MoviesComponent implements OnInit {
 
   sortKey: string = '';
 
-  
+
 
   trackByFn: TrackByFunction<AbstractControl> = (index, item) => Object.keys(item)[0] || index;
 
@@ -59,7 +60,7 @@ export class MoviesComponent implements OnInit {
     public moviesService: MoviesService,
     private fb: FormBuilder,
     private store: Store,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.get();
@@ -71,22 +72,22 @@ export class MoviesComponent implements OnInit {
   }
 
   buildForm() {
-      this.form = this.fb.group({
-            popularity: [this.selected.popularity || '', []],
-            voteCount: [this.selected.voteCount || '', []],
-            video: [this.selected.video || false, []],
-            posterPath: [this.selected.posterPath || '', []],
-            movieId: [this.selected.movieId || '', []],
-            adult: [this.selected.adult || false, []],
-            backdropPath: [this.selected.backdropPath || '', []],
-            originalLanguage: [this.selected.originalLanguage || '', []],
-            originalTitle: [this.selected.originalTitle || '', []],
-            title: [this.selected.title || '', []],
-            voteAverage: [this.selected.voteAverage || '', []],
-            overview: [this.selected.overview || '', []],
-            releaseDate: [this.selected.releaseDate ? new Date(this.selected.releaseDate) : null, []],
+    this.form = this.fb.group({
+      popularity: [this.selected.popularity || '', []],
+      voteCount: [this.selected.voteCount || '', []],
+      video: [this.selected.video || false, []],
+      posterPath: [this.selected.posterPath || '', []],
+      movieId: [this.selected.movieId || '', []],
+      adult: [this.selected.adult || false, []],
+      backdropPath: [this.selected.backdropPath || '', []],
+      originalLanguage: [this.selected.originalLanguage || '', []],
+      originalTitle: [this.selected.originalTitle || '', []],
+      title: [this.selected.title || '', []],
+      voteAverage: [this.selected.voteAverage || '', []],
+      overview: [this.selected.overview || '', []],
+      releaseDate: [this.selected.releaseDate ? new Date(this.selected.releaseDate) : null, []],
 
-      });
+    });
   }
 
   openModal() {
@@ -96,7 +97,7 @@ export class MoviesComponent implements OnInit {
 
   onAdd() {
     this.selected = {
-    
+
     } as Movies.Movie;
     this.openModal();
   }
@@ -116,19 +117,19 @@ export class MoviesComponent implements OnInit {
 
     this.store
       .dispatch(new CreateUpdateMovie({
-              ...this.form.value,
-            }, this.selected.id)
+        ...this.form.value,
+      }, this.selected.id)
       )
       .pipe(finalize(() => (this.modalBusy = false)))
       .subscribe(() => {
         this.isModalVisible = false;
-		this.get();
+        this.get();
       });
   }
 
   delete(id: string) {
     this.confirmationService
-      .warn('::DeleteConfirmationMessage', '::AreYouSure',{})
+      .warn('::DeleteConfirmationMessage', '::AreYouSure', {})
       .subscribe((status: Confirmation.Status) => {
         if (status === Confirmation.Status.confirm) {
           this.store.dispatch(new DeleteMovie(id)).subscribe(() => this.get())
@@ -144,13 +145,25 @@ export class MoviesComponent implements OnInit {
 
   get() {
     this.loading = true;
-	let filter = Object.assign({}, this.pageQuery);
-	filter.releaseDateMin = filter.releaseDateMin ? new Date(filter.releaseDateMin).toISOString() : "";
-	filter.releaseDateMax = filter.releaseDateMax ? new Date(filter.releaseDateMax).toISOString() : "";
+    let filter = Object.assign({}, this.pageQuery);
+    filter.releaseDateMin = filter.releaseDateMin ? new Date(filter.releaseDateMin).toISOString() : "";
+    filter.releaseDateMax = filter.releaseDateMax ? new Date(filter.releaseDateMax).toISOString() : "";
 
     this.store
       .dispatch(new GetMovies(filter))
       .pipe(finalize(() => (this.loading = false)))
-      .subscribe();
+      .subscribe(result=>{
+        console.log(result);
+        console.log(this.data$);
+      });
+  }
+
+  getYoutubeTrailer(movie: Movies.Movie) {
+    if(movie.youtubeTrailerId) return;
+    this.moviesService
+    .getYoutubeTrailer(movie.movieId.toString())
+    .subscribe((youtubeId: string) => {
+      movie.youtubeTrailerId = youtubeId;
+    });
   }
 }

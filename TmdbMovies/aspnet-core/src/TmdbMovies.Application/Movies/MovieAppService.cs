@@ -14,7 +14,7 @@ using TmdbMovies.Movies;
 namespace TmdbMovies.Movies
 {
     [RemoteService(IsEnabled = false)]
-    [Authorize(TmdbMoviesPermissions.Movies.Default)]
+    //[Authorize(TmdbMoviesPermissions.Movies.Default)]
     public class MovieAppService : ApplicationService, IMovieAppService
     {
         private readonly IMovieRepository _movieRepository;

@@ -32,5 +32,9 @@ namespace TmdbMovies.Movies
 
         public DateTime ReleaseDate { get; set; }
 
+        public string YoutubeTrailerId { get; set; }
+
+        public bool NoYoutubeTrailer { get; set; }
+
     }
 }

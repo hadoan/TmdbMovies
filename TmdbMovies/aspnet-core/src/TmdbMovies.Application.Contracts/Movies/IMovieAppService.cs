@@ -16,5 +16,6 @@ namespace TmdbMovies.Movies
         Task<MovieDto> CreateAsync(MovieCreateDto input);
 
         Task<MovieDto> UpdateAsync(long id, MovieUpdateDto input);
+
     }
 }

@@ -14,3 +14,10 @@ export class DeleteMovie {
     static readonly type = '[Movies] Delete';
     constructor(public id: string) { }
 }
+
+export class GetYoutubeTrailer {
+    static readonly type = '[Movies] Get Trailer';
+
+    constructor(public moviedId: string) {
+    }
+}

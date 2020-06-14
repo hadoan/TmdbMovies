@@ -10,6 +10,8 @@ namespace TmdbMovies.Movies
     {
         Task<int> GetNextRetrieverPage();
 
+        Task<Movie> FindByMovieId(long movieId);
+
         Task SaveCurrentRetrieverPage(int page, int totalPages);
 
         Task BulkInsert(IList<Movie> movies);
