@@ -1,0 +1,6 @@
+config:
+  azure:environment: public
+  azure:location: SoutheastAsia
+  tmdbmovies:aks_password: tmdbmovies@#1111
+  tmdbmovies:sshPublicKey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDry4b1NLguQqVtD6GaAn6ue4AxyfwdRg83RrEGm6gEAXiG9+DTSdpBe6B8Vvl9qRDntjDjtEkAZ8H4F6EoMziz5b8BQuOVRMaOZIGHDUPOI30MGnVFiwRxSuJdeXQv+mATqlM6wr3tIazmbr7zQ17R7E303r89LKDgmzuxcqevWPjwESN4kGzEdabbrcrP4NttnRQgfzfLwkLQ5t6DqIdiKPAojRpBrYpIaGYIuKdW5sOHUHpVArDqy8SfFnkLiE8dSBagKRvrs/et16Tv17INln+haCKQlCCijcWaMsEQPJLWv3fH7XZ0jNww6Cz8Y6ILP9cuBExvO8hUy6oOXmPF
+    ha@HaPc
