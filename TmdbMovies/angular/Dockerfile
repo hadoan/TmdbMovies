@@ -1,19 +1,19 @@
-# base image
-FROM node:14.4-slim
+# Stage 1
+FROM node:14.4.0-alpine as node
 
-# set working directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+COPY package*.json ./
 
-# install and cache app dependencies
-COPY package.json /app/package.json
 RUN npm install
-RUN npm install -g @angular/cli@9.0.5
 
-# add app
-COPY . /app
+COPY . .
 
-# start app
-CMD ng serve --host 0.0.0.0
+RUN npm run build
+
+# Stage 2
+FROM nginx:1.13.12-alpine
+
+COPY --from=node /usr/src/app/dist/angular-docker /usr/share/nginx/html
+
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
