@@ -1,21 +1,21 @@
 export const environment = {
-  production: false,
+  production: true,
   application: {
     name: 'TmdbMovies',
     logoUrl: '',
   },
   oAuthConfig: {
-    issuer: 'https://localhost:44334',
+    issuer: 'http://52.163.221.126',
     clientId: 'TmdbMovies_App',
     dummyClientSecret: '1q2w3e*',
     scope: 'TmdbMovies',
     showDebugInformation: true,
     oidc: false,
-    requireHttps: true,
+    requireHttps: false,
   },
   apis: {
     default: {
-      url: 'https://localhost:44334',
+      url: 'http://52.163.221.126',
     },
   },
   localization: {

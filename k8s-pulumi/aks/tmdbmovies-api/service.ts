@@ -19,6 +19,7 @@ export class ApiService {
                         targetPort: 80
                     }
                 ],
+                type: 'LoadBalancer'
             }
         });
 

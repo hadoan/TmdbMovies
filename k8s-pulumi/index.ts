@@ -6,6 +6,7 @@ import * as aks from './aks/aks-deployment';
 import * as api from './aks/tmdbmovies-api';
 import * as web from './aks/tmdbmovies-frontend';
 import * as ingress from './aks/nginx-ingress';
+import * as backendIngress from './aks/nginx-ingress-backend';
 
 //Deploy k8s
 new api.ApiConfig().New();
@@ -17,9 +18,11 @@ new web.WebService().New();
 
 
 //ingress
-new ingress.NginxIngressDeployment().NewNginxIngress();
-new ingress.IngressService().New();
+// new ingress.NginxIngressDeployment().NewNginxIngress();
+// new ingress.IngressService().New();
 
+// new backendIngress.BackendNginxIngressDeployment().NewNginxIngress();
+// new backendIngress.BackendIngressService().New();
 
 // Export the connection string for the storage account 
 export const name = 'k8s-pulumi';

@@ -19,6 +19,7 @@ export class WebService {
                         targetPort: 80
                     }
                 ],
+                type: 'LoadBalancer'
             }
         });
 
