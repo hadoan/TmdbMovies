@@ -5,7 +5,7 @@ export const environment = {
     logoUrl: '',
   },
   oAuthConfig: {
-    issuer: 'http://52.163.221.126',
+    issuer: 'https://localhost:44334',
     clientId: 'TmdbMovies_App',
     dummyClientSecret: '1q2w3e*',
     scope: 'TmdbMovies',
@@ -15,7 +15,7 @@ export const environment = {
   },
   apis: {
     default: {
-      url: 'http://52.163.221.126',
+      url: 'https://localhost:44334',
     },
   },
   localization: {
