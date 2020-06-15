@@ -5,17 +5,17 @@ export const environment = {
     logoUrl: '',
   },
   oAuthConfig: {
-    issuer: 'https://localhost:44334',
+    issuer: 'http://13.76.225.37/api',
     clientId: 'TmdbMovies_App',
     dummyClientSecret: '1q2w3e*',
     scope: 'TmdbMovies',
     showDebugInformation: true,
     oidc: false,
-    requireHttps: true,
+    requireHttps: false,
   },
   apis: {
     default: {
-      url: 'https://localhost:44334',
+      url: 'http://13.76.225.37/api',
     },
   },
   localization: {
