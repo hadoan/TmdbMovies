@@ -3,7 +3,7 @@ import * as azure from "@pulumi/azure";
 import { DeploymentConsts } from '../common/consts';
 
 export const dbUserName = "sql";
-export const dbUserPwd = "tmdbmovies@#1111";
+export const dbUserPwd = "your-password"; //hard-code, please use Pulumi config for this setting
 
 export function newSqlServer(resourceGroup: azure.core.ResourceGroup) {
     const serverName = DeploymentConsts.APP_NAME + "-sql-server";
