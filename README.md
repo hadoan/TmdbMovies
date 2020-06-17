@@ -22,6 +22,7 @@
 ## Demo APP: deployed to Azure AKS
 - API: http://52.163.221.126/swagger/index.html
 - Web: http://52.187.150.193/, to to Movies Menu to see data
+- Guidance how to deploy to AKS: https://medium.com/@hadoan/angular-net-core-sql-on-azure-aks-by-pulumi-95f288935884
 
 ## Docker Image
 - Backend: https://hub.docker.com/repository/docker/hadoanmanh/tmdbmovies-api
